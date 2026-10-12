@@ -89,17 +89,8 @@ describe('continuing to the next page', () => {
     expect(currentPath()).toBe('/region');
   });
 
-  it('shows nothing between the phase banner and the footer on /region (requirement 32)', () => {
-    renderApp('/region');
-    const main = screen.getByRole('main');
-    expect(normalise(main.textContent)).toBe('');
-    expect(main.querySelectorAll('h1, h2, a, button, input')).toHaveLength(0);
-  });
-
-  it(`gives /region the tab title "${SERVICE_TITLE}" (requirement 33)`, async () => {
-    renderApp('/region');
-    await waitFor(() => expect(document.title).toBe(SERVICE_TITLE));
-  });
+  // Requirements 32 and 33 (an empty /region page with the service name as its tab title)
+  // no longer apply: the region page now has its question. See spec/02-region-page/spec.md.
 
   it('returns to the first page, as it was, when Back is pressed (requirement 34)', async () => {
     const { user, currentPath, goBack } = renderApp('/');
@@ -112,7 +103,7 @@ describe('continuing to the next page', () => {
     expect(getStartButton()).toBeInTheDocument();
   });
 
-  it('shows the empty page, not an error, when /region is opened directly (requirement 35)', () => {
+  it('shows the region page, not an error, when /region is opened directly (requirement 35)', () => {
     renderApp('/region');
     expect(screen.getByRole('main')).toBeInTheDocument();
     expect(screen.queryByText(/not found|error/i)).not.toBeInTheDocument();

@@ -19,11 +19,13 @@ export const getChangeLink = () => screen.getByRole('link', { name: CHANGE_REGIO
 export const getAccept = () => within(getMain()).getByRole('button', { name: ACCEPT_TEXT });
 export const getOwnershipContinue = () => within(getMain()).getByRole('button', { name: 'Continue' });
 
-// Answers the region question from /region and, for a UK region, presses "Continue"
-// on the ownership page too, so the user ends on the check answers page.
+// Answers the region question from /region and, for a UK region, answers "Own (with or
+// without mortgage)" on the ownership page too, so the user ends on the check answers page.
+// (The ownership page needs an answer since spec/04-ownership-page.)
 export async function reachCheckAnswers(user, region) {
   await answerRegion(user, region);
   if (region !== 'Outside of the UK') {
+    await user.click(screen.getByRole('radio', { name: 'Own (with or without mortgage)' }));
     await user.click(getOwnershipContinue());
   }
 }

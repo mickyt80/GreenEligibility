@@ -1,7 +1,7 @@
 // Plan step 1: the new journey and the check answers page.
 // Spec requirements 1–19 and 29.
 import { describe, it, expect, beforeEach } from 'vitest';
-import { screen, within, waitFor, act } from '@testing-library/react';
+import { screen, within, waitFor } from '@testing-library/react';
 import {
   renderApp,
   clearCookies,
@@ -57,12 +57,8 @@ describe('the journey', () => {
     expect(comesBefore(getRadio(OWNERSHIP_ANSWERS[3]), button)).toBe(true);
   });
 
-  it('opens the check answers page from the ownership page’s "Continue", with no ownership answer selected (requirement 4)', async () => {
-    const { user, currentPath } = renderApp('/region');
-    await answerRegion(user, 'Wales');
-    await user.click(getOwnershipContinue());
-    expect(currentPath()).toBe('/check-answers');
-  });
+  // Changed by spec/04-ownership-page: "Continue" with no ownership answer now shows an
+  // error, and the answer is kept and shown. See test/04-ownership-page/.
 
   it('opens the check answers page from the ownership page’s "Continue", with an ownership answer selected (requirement 4)', async () => {
     const { user, currentPath } = renderApp('/region');
@@ -72,15 +68,6 @@ describe('the journey', () => {
     expect(currentPath()).toBe('/check-answers');
   });
 
-  it('does not keep or show the ownership answer (requirement 5)', async () => {
-    const { user, goBack } = renderApp('/region');
-    await answerRegion(user, 'Wales');
-    await user.click(getRadio('Rent from the council'));
-    await user.click(getOwnershipContinue());
-    expect(getMain()).not.toHaveTextContent('Rent from the council');
-    act(() => goBack());
-    expect(checkedLabels()).toEqual([]);
-  });
 });
 
 describe('the check answers page', () => {
@@ -97,12 +84,13 @@ describe('the check answers page', () => {
   });
 
   it.each([...UK_REGIONS, OUTSIDE_UK])(
-    'shows one row with the label, the answer "%s" and a "Change" link (requirement 8)',
+    // Changed by spec/04-ownership-page: a UK region also has an ownership row, after this one.
+    'shows the region row first, with the label, the answer "%s" and a "Change" link (requirement 8)',
     async (region) => {
       const { user } = renderApp('/region');
       await reachCheckAnswers(user, region);
       const rows = getRows();
-      expect(rows).toHaveLength(1);
+      expect(rows).toHaveLength(region === OUTSIDE_UK ? 1 : 2);
       expect(normalise(getRowKey(rows[0]).textContent)).toBe(REGION_LABEL);
       expect(normalise(getRowValue(rows[0]).textContent)).toBe(region);
       expect(within(rows[0]).getByRole('link')).toBe(getChangeLink());
@@ -134,9 +122,11 @@ describe('the check answers page', () => {
     expect(comesBefore(getRows()[0], button)).toBe(true);
   });
 
+  // Changed by spec/04-ownership-page: checked with "Outside of the UK", which has only the
+  // region row. The UK regions' second row is tested in test/04-ownership-page/.
   it('shows no other rows, form fields, links or buttons (requirement 12)', async () => {
     const { user } = renderApp('/region');
-    await reachCheckAnswers(user, 'Scotland');
+    await reachCheckAnswers(user, OUTSIDE_UK);
     const main = getMain();
     expect(getRows()).toHaveLength(1);
     expect(main.querySelectorAll('input, select, textarea')).toHaveLength(0);
@@ -192,6 +182,7 @@ describe('changing the region answer', () => {
     await user.click(getChangeLink());
     await answerRegion(user, 'Scotland');
     expect(currentPath()).toBe('/ownership');
+    await user.click(getRadio('Own (with or without mortgage)'));
     await user.click(getOwnershipContinue());
     expect(currentPath()).toBe('/check-answers');
     expect(normalise(getRowValue(getRows()[0]).textContent)).toBe('Scotland');
@@ -208,9 +199,10 @@ describe('changing the region answer', () => {
 });
 
 describe('using a keyboard (requirement 29)', () => {
+  // Checked with "Outside of the UK", which has only one "Change" link (spec/04-ownership-page).
   it('moves from "Change" to "Accept and continue" with Tab', async () => {
     const { user } = renderApp('/region');
-    await reachCheckAnswers(user, 'England');
+    await reachCheckAnswers(user, OUTSIDE_UK);
     getChangeLink().focus();
     await user.tab();
     expect(getAccept()).toHaveFocus();

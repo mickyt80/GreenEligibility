@@ -130,7 +130,7 @@
 | The results page decides what to show from the kept answer, so a refresh still shows the "not eligible" message. | The kept answer is the only record of the result, and it survives a refresh. |
 | Opening `/result` before "Accept and continue" has been clicked on the check answers page sends the user to the first page, whatever the answer. | Required (open question 5, then changed by `spec/03-check-answers/spec.md`). |
 | "Outside of the UK" goes to the check answers page, not straight to the results page. | Required. Changed by `route.md` and `spec/03-check-answers/spec.md`: check answers is always shown before the result. |
-| The starter's other pages (property type, income, insulation, heating) are left as they are, and nothing links to them. | They are outside this page's intent. |
+| The starter's other pages (property type, income, insulation, heating) are left as they are, and nothing links to them. | They are outside this page's intent. *Changed 2026-10-13: these four pages have since been removed, because the journey doesn't use them.* |
 
 ## Open questions
 

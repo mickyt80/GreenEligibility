@@ -2,3 +2,7 @@ node_modules/
 dist/
 .env
 public/
+gitcommand.md
+route.md
+instruction.md
+Questions.md

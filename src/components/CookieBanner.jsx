@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // GOV.UK cookie banner, following GOV.UK Frontend's cookie banner markup and the
 // design system's wording for a service that would use analytics cookies.
 // The choice is saved in a browser cookie for one year. No analytics are ever run.
 
-const SERVICE_NAME = 'Check if you are eligible for a Green Home Grant';
 const COOKIE_NAME = 'cookies_policy';
 const ONE_YEAR_IN_SECONDS = 365 * 24 * 60 * 60;
 
@@ -19,6 +19,7 @@ function saveChoice(analytics) {
 }
 
 export default function CookieBanner() {
+  const { t } = useLanguage();
   const { pathname } = useLocation();
   // 'undecided' shows the question; 'accepted' or 'rejected' shows the confirmation;
   // 'hidden' shows nothing.
@@ -32,29 +33,27 @@ export default function CookieBanner() {
   };
 
   return (
-    <div className="govuk-cookie-banner" data-nosnippet role="region" aria-label={`Cookies on ${SERVICE_NAME}`}>
+    <div className="govuk-cookie-banner" data-nosnippet role="region" aria-label={t('cookiesHeading')}>
       {status === 'undecided' ? (
         <div className="govuk-cookie-banner__message govuk-width-container">
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
-              <h2 className="govuk-cookie-banner__heading govuk-heading-m">Cookies on {SERVICE_NAME}</h2>
+              <h2 className="govuk-cookie-banner__heading govuk-heading-m">{t('cookiesHeading')}</h2>
               <div className="govuk-cookie-banner__content">
-                <p className="govuk-body">We use some essential cookies to make this service work.</p>
-                <p className="govuk-body">
-                  We’d also like to use analytics cookies so we can understand how you use the service and make improvements.
-                </p>
+                <p className="govuk-body">{t('cookiesEssential')}</p>
+                <p className="govuk-body">{t('cookiesAnalytics')}</p>
               </div>
             </div>
           </div>
           <div className="govuk-button-group">
             <button type="button" className="govuk-button" onClick={() => choose(true)}>
-              Accept analytics cookies
+              {t('cookiesAccept')}
             </button>
             <button type="button" className="govuk-button" onClick={() => choose(false)}>
-              Reject analytics cookies
+              {t('cookiesReject')}
             </button>
             <Link className="govuk-link" to="/cookies">
-              View cookies
+              {t('cookiesView')}
             </Link>
           </div>
         </div>
@@ -64,18 +63,18 @@ export default function CookieBanner() {
             <div className="govuk-grid-column-two-thirds">
               <div className="govuk-cookie-banner__content">
                 <p className="govuk-body">
-                  You’ve {status} analytics cookies. You can{' '}
+                  {t(status === 'accepted' ? 'cookiesAcceptedBefore' : 'cookiesRejectedBefore')}
                   <Link className="govuk-link" to="/cookies">
-                    change your cookie settings
-                  </Link>{' '}
-                  at any time.
+                    {t('cookiesSettingsLink')}
+                  </Link>
+                  {t('cookiesConfirmAfter')}
                 </p>
               </div>
             </div>
           </div>
           <div className="govuk-button-group">
             <button type="button" className="govuk-button" onClick={() => setStatus('hidden')}>
-              Hide cookie message
+              {t('cookiesHide')}
             </button>
           </div>
         </div>

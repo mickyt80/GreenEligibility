@@ -4,6 +4,8 @@ import SkipLink from './components/SkipLink';
 import GovukHeader from './components/GovukHeader';
 import PhaseBanner from './components/PhaseBanner';
 import GovukFooter from './components/GovukFooter';
+import LanguageNavigation from './components/LanguageNavigation';
+import { LanguageProvider } from './i18n/LanguageContext';
 import StartPage from './pages/StartPage';
 import RegionPage from './pages/RegionPage';
 import CookiesPage from './pages/CookiesPage';
@@ -16,15 +18,17 @@ import ResultPage from './pages/ResultPage';
 import AccessibilityStatementPage from './pages/AccessibilityStatementPage';
 
 // The page frame and the journey's pages. Each page keeps its own answer in
-// journeyAnswers.js, so no answers are held here.
+// journeyAnswers.js, so no answers are held here. The whole service is shown in the
+// language chosen in the language navigation, which appears on every page.
 function App() {
   return (
-    <>
+    <LanguageProvider>
       <CookieBanner />
       <SkipLink />
       <GovukHeader />
-      <PhaseBanner phase="Alpha" feedbackHref="#" />
+      <PhaseBanner feedbackHref="#" />
       <div className="govuk-width-container">
+        <LanguageNavigation />
         <main className="govuk-main-wrapper" id="main-content">
           <Routes>
             <Route path="/" element={<StartPage />} />
@@ -41,7 +45,7 @@ function App() {
         </main>
       </div>
       <GovukFooter />
-    </>
+    </LanguageProvider>
   );
 }
 

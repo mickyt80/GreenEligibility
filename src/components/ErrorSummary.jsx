@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // GOV.UK error summary, following GOV.UK Frontend's error summary markup.
 // It takes focus as soon as it appears, so screen readers announce it.
 // Each error links to the field it is about, and clicking it moves focus there.
 export default function ErrorSummary({ errors }) {
+  const { t } = useLanguage();
   const summaryRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function ErrorSummary({ errors }) {
   return (
     <div className="govuk-error-summary" data-module="govuk-error-summary" tabIndex={-1} ref={summaryRef}>
       <div role="alert">
-        <h2 className="govuk-error-summary__title">There is a problem</h2>
+        <h2 className="govuk-error-summary__title">{t('errorSummaryTitle')}</h2>
         <div className="govuk-error-summary__body">
           <ul className="govuk-list govuk-error-summary__list">
             {errors.map(({ fieldId, message }) => (

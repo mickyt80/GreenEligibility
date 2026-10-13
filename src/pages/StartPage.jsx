@@ -1,20 +1,19 @@
 import GovukButton from '../components/GovukButton';
 import usePageTitle from '../hooks/usePageTitle';
-
-export const SERVICE_NAME = 'Check if you are eligible for a Green Home Grant';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // The first page, following the design system's "Start using a service" pattern.
 function StartPage() {
-  usePageTitle(SERVICE_NAME);
+  const { t } = useLanguage();
+  const serviceName = t('serviceName');
+  usePageTitle(serviceName);
 
   return (
     <>
-      <h1 className="govuk-heading-xl">{SERVICE_NAME}</h1>
-      <p className="govuk-body">
-        The Green Home Grant is a government scheme that funds home insulation and heat pumps.
-      </p>
+      <h1 className="govuk-heading-xl">{serviceName}</h1>
+      <p className="govuk-body">{t('startDescription')}</p>
       <GovukButton to="/region" variant="start">
-        Check your eligibility
+        {t('startButton')}
       </GovukButton>
     </>
   );

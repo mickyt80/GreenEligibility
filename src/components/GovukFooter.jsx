@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import GovukLogo from './GovukLogo';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // GOV.UK footer, following GOV.UK Frontend's footer markup.
 // The only support link is the accessibility statement.
 export default function GovukFooter() {
+  const { t } = useLanguage();
   return (
     <footer className="govuk-template__footer">
       <div className="govuk-footer">
@@ -11,11 +13,11 @@ export default function GovukFooter() {
           <GovukLogo className="govuk-footer__crown" useLogotype={false} />
           <div className="govuk-footer__meta">
             <div className="govuk-footer__meta-item govuk-footer__meta-item--grow">
-              <h2 className="govuk-visually-hidden">Support links</h2>
+              <h2 className="govuk-visually-hidden">{t('footerSupportLinks')}</h2>
               <ul className="govuk-footer__inline-list">
                 <li className="govuk-footer__inline-list-item">
                   <Link className="govuk-footer__link" to="/accessibility-statement">
-                    Accessibility statement
+                    {t('footerAccessibility')}
                   </Link>
                 </li>
               </ul>
@@ -34,15 +36,15 @@ export default function GovukFooter() {
                 />
               </svg>
               <span className="govuk-footer__licence-description">
-                All content is available under the{' '}
+                {t('footerLicenceBefore')}
                 <a
                   className="govuk-footer__link"
                   href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                   rel="license"
                 >
-                  Open Government Licence v3.0
+                  {t('footerLicenceLink')}
                 </a>
-                , except where otherwise stated
+                {t('footerLicenceAfter')}
               </span>
             </div>
             <div className="govuk-footer__meta-item">
@@ -50,7 +52,7 @@ export default function GovukFooter() {
                 className="govuk-footer__link govuk-footer__copyright-logo"
                 href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
               >
-                © Crown copyright
+                {t('footerCopyright')}
               </a>
             </div>
           </div>

@@ -1,6 +1,6 @@
 # Spec: Green Home Grant – region page
 
-*Based on `intent/02-region-page/intent.md` and Question 1 in `Questions.md`. It builds on `spec/01-start-page/spec.md`. Everything there about starting the app, the page frame (header, phase banner, footer, cookie banner, skip link) and the cookies and accessibility statement pages still applies, and is not repeated here.*
+*Based on `intent/02-region-page/intent.md` and Question 1 in `Questions.md`. It builds on `spec/01-start-page/spec.md`. Requirements marked *Changed* were updated on 2026-10-13 to follow `route.md` and `spec/03-check-answers/spec.md`, which now always shows check answers before the result. Requirement numbers are kept so earlier references stay correct. Everything there about starting the app, the page frame (header, phase banner, footer, cookie banner, skip link) and the cookies and accessibility statement pages still applies, and is not repeated here.*
 
 ## Requirements
 
@@ -52,20 +52,20 @@
     2. Rent from a private landlord
     3. Rent from a housing association
     4. Rent from the council
-26. The ownership page has no "Continue" button, and no other questions, form fields or buttons apart from the cookie banner.
-27. Selecting an answer on the ownership page leaves the user on that page. The answer is not kept: refreshing the page shows no answer selected.
+26. The ownership page has a green "Continue" button, which opens the check answers page at `/check-answers`. It has no other questions, form fields or buttons apart from the cookie banner. *Changed by `spec/03-check-answers/spec.md`.*
+27. Selecting an answer on the ownership page leaves the user on that page until "Continue" is clicked. The answer is not kept: refreshing the page shows no answer selected. *Changed by `spec/03-check-answers/spec.md`.*
 28. Typing `https://lab11139.labs.decoded.com:5000/ownership` straight into the address bar shows the ownership page. It does not show an error.
 
 ### Answering "Outside of the UK"
 
-29. Selecting "Outside of the UK" and clicking "Continue" opens the results page, and the address bar ends in `/result`.
+29. Selecting "Outside of the UK" and clicking "Continue" opens the check answers page, and the address bar ends in `/check-answers`. Clicking "Accept and continue" there opens the results page at `/result`. *Changed by `spec/03-check-answers/spec.md`.*
 30. The results page's heading reads "You are not eligible for a Green Home Grant".
 31. Under the heading, the results page shows the text "The Green Home Grant is only available to people who live in the UK."
 32. The results page's browser tab reads "You are not eligible for a Green Home Grant – GOV.UK".
 33. The results page has no "Back" link, no "Continue" button, and no link to change the answer.
 34. The results page shows nothing about being eligible, and no other result.
-35. Pressing the browser's Back button on the results page returns to the region page with "Outside of the UK" still selected.
-36. Typing `https://lab11139.labs.decoded.com:5000/result` straight into the address bar opens the first page, and the address bar ends in `/`, unless "Outside of the UK" was the last answer continued with in that tab. This includes when no answer has been chosen, and when a UK region was chosen.
+35. Pressing the browser's Back button on the results page returns to the check answers page. *Changed by `spec/03-check-answers/spec.md`.*
+36. Typing `https://lab11139.labs.decoded.com:5000/result` straight into the address bar opens the first page, and the address bar ends in `/`, unless "Accept and continue" has been clicked on the check answers page since the region answer was last saved. This includes when no answer has been chosen, and when "Outside of the UK" was chosen. *Changed by `spec/03-check-answers/spec.md`.*
 
 ### Going back and returning
 
@@ -89,16 +89,17 @@
 ### Walkthrough
 
 47. Anyone can check the pages by following these steps. Start in a new private browsing window, so that no answer has been kept.
+    *Changed:* steps 4, 8, 9 and 10 now go through the check answers page. See the walkthrough in `spec/03-check-answers/spec.md` (requirement 31).
     1. Start the app (`npm run dev`) and open `https://lab11139.labs.decoded.com:5000/`. Type `/result` after the address and check you are sent back to the first page. Click "Check your eligibility".
     2. Check the address ends in `/region`, and that the tab title, "Back" link, heading, five answers and "Continue" button match requirements 4–11 word for word, with nothing selected.
     3. Click "Continue" without choosing. Check the error box, the red message above the answers and the "Error:" tab title (requirements 14–18). Click the link in the error box and check focus moves to "England".
-    4. Select "Scotland" and click "Continue". Check the address ends in `/ownership`, and the tab title, "Back" link, heading and four answers match requirements 22–25 word for word, with no "Continue" button. Select an answer, refresh, and check nothing is selected.
+    4. Select "Scotland" and click "Continue". Check the address ends in `/ownership`, and the tab title, "Back" link, heading and four answers match requirements 22–25 word for word, and that there is a "Continue" button. Select an answer, refresh, and check nothing is selected.
     5. Click the ownership page's "Back" link. Check the region page opens with "Scotland" still selected. Refresh, and check it is still selected.
     6. Click "Back". Check the first page opens. Click "Check your eligibility" and check "Scotland" is still selected.
     7. Repeat step 4 with "England", "Wales" and "Northern Ireland", going back each time. Each should reach the ownership page.
     8. With "Northern Ireland" the last answer continued with, type `/result` after the address. Check you are sent to the first page.
-    9. Go to `/region`, select "Outside of the UK" and click "Continue". Check the address ends in `/result`, and that the heading, text and tab title match requirements 30–32. Check there is no "Back" link, "Continue" button or link to change the answer.
-    10. Refresh the results page and check it still shows the "not eligible" message. Press the browser's Back button and check the region page shows "Outside of the UK" selected.
+    9. Go to `/region`, select "Outside of the UK" and click "Continue". Check the address ends in `/check-answers`. Click "Accept and continue". Check the address ends in `/result`, and that the heading, text and tab title match requirements 30–32. Check there is no "Back" link, "Continue" button or link to change the answer.
+    10. Refresh the results page and check it still shows the "not eligible" message. Press the browser's Back button and check the check answers page shows "Outside of the UK".
     11. Narrow the window to about 320 pixels. Check there is no sideways scrolling on the region page (with a full-width "Continue" button), the ownership page or the results page.
     12. Close the tab, open the service in a new tab, and go to `/region`. Check no answer is selected.
 
@@ -117,7 +118,7 @@
 | Each page's tab title is its heading followed by "– GOV.UK". This replaces the service-name title the region page had as an empty page. | Each page's title is its page heading, as settled for the first page. This updates requirement 33 of the first page's spec. |
 | The region page's empty-page check in the first page's spec (requirement 32) and its tests no longer apply. | The region page now has content. |
 | The next page is the starter's ownership page at `/ownership`, asking "Do you own or rent your property?" with its four answers, in place of "Do you own your home?" with Yes or No from `Questions.md`. | Required (open question 1). This changes what the intent said about the next page. |
-| The ownership page shows its question, answers and "Back" link only. It has no "Continue" button, and nothing is kept from it. | Required (open question 1a). Making it work is a later piece of work. |
+| The ownership page shows its question, answers, "Back" link and a "Continue" button to `/check-answers`. Nothing is kept from it. | Required (open question 1a, then changed by `spec/03-check-answers/spec.md`). Saving and checking its answer is a later piece of work. |
 | The ownership page's "Back" link goes to `/region`, not `/property-type` as the starter has it. | The region page is now the page before it. |
 | The results page is the starter's page at `/result`. | It reuses the starter's address and page for results. |
 | The results page heading is "You are not eligible for a Green Home Grant", followed by the reason as body text. | Required (open question 2). The reason is the intent's wording. |
@@ -127,8 +128,9 @@
 | The chosen answer is kept in the browser tab's session storage, under one key for the journey's answers. | Required (open question 4): it survives going back and refreshing, and is forgotten when the tab is closed. |
 | An answer is kept only when "Continue" is pressed with an answer selected. | This is how GOV.UK question pages behave: leaving without continuing doesn't save. |
 | The results page decides what to show from the kept answer, so a refresh still shows the "not eligible" message. | The kept answer is the only record of the result, and it survives a refresh. |
-| Opening `/result` when the last answer continued with is not "Outside of the UK" sends the user to the first page. | Required (open question 5). |
-| The starter's other pages (property type, income, insulation, heating, check answers) are left as they are, and nothing links to them. | They are outside this page's intent. |
+| Opening `/result` before "Accept and continue" has been clicked on the check answers page sends the user to the first page, whatever the answer. | Required (open question 5, then changed by `spec/03-check-answers/spec.md`). |
+| "Outside of the UK" goes to the check answers page, not straight to the results page. | Required. Changed by `route.md` and `spec/03-check-answers/spec.md`: check answers is always shown before the result. |
+| The starter's other pages (property type, income, insulation, heating) are left as they are, and nothing links to them. | They are outside this page's intent. |
 
 ## Open questions
 

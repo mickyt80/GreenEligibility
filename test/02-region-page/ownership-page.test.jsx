@@ -64,10 +64,13 @@ describe('the ownership page', () => {
     expect(labels).toEqual(OWNERSHIP_ANSWERS);
   });
 
-  it('has no "Continue" button, and no other form fields or buttons (requirement 26)', () => {
+  // Changed by spec/03-check-answers: the page now has a "Continue" button.
+  it('has a "Continue" button, and no other form fields or buttons (requirement 26)', () => {
     renderApp('/ownership');
     const main = getMain();
-    expect(within(main).queryAllByRole('button')).toHaveLength(0);
+    const buttons = within(main).queryAllByRole('button');
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0]).toHaveTextContent('Continue');
     expect(main.querySelectorAll('input')).toHaveLength(4);
     expect(main.querySelectorAll('select, textarea')).toHaveLength(0);
   });

@@ -179,10 +179,11 @@ describe('where each answer leads', () => {
     expect(currentPath()).toBe('/ownership');
   });
 
-  it(`opens /result after "${OUTSIDE_UK}" (requirement 29)`, async () => {
+  // Changed by spec/03-check-answers: check answers is always shown before the result.
+  it(`opens /check-answers after "${OUTSIDE_UK}" (requirement 29)`, async () => {
     const { user, currentPath } = renderApp('/region');
     await answerRegion(user, OUTSIDE_UK);
-    expect(currentPath()).toBe('/result');
+    expect(currentPath()).toBe('/check-answers');
   });
 });
 
@@ -219,6 +220,6 @@ describe('using a keyboard', () => {
     }
     expect(getContinue()).toHaveFocus();
     await user.keyboard('{Enter}');
-    expect(currentPath()).toBe('/result');
+    expect(currentPath()).toBe('/check-answers');
   });
 });

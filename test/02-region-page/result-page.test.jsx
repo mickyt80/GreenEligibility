@@ -6,7 +6,6 @@ import {
   renderApp,
   clearCookies,
   getMain,
-  checkedLabels,
   answerRegion,
   refresh,
   UK_REGIONS,
@@ -16,10 +15,12 @@ import {
   RESULT_REASON,
 } from './helpers';
 
-// Answers "Outside of the UK" on the region page, which opens the results page.
+// Answers "Outside of the UK" on the region page, which opens check answers, then
+// accepts, which opens the results page. (Changed by spec/03-check-answers.)
 async function reachNotEligible() {
   const app = renderApp('/region');
   await answerRegion(app.user, OUTSIDE_UK);
+  await app.user.click(screen.getByRole('button', { name: 'Accept and continue' }));
   return app;
 }
 
@@ -63,11 +64,11 @@ describe('the results page after "Outside of the UK"', () => {
     expect(withoutSpaces(getMain().textContent)).toBe(withoutSpaces(`${RESULT_HEADING} ${RESULT_REASON}`));
   });
 
-  it(`returns to the region page with "${OUTSIDE_UK}" selected with the browser’s Back button (requirement 35)`, async () => {
+  // Changed by spec/03-check-answers: Back now returns to check answers.
+  it('returns to the check answers page with the browser’s Back button (requirement 35)', async () => {
     const { currentPath, goBack } = await reachNotEligible();
     act(() => goBack());
-    expect(currentPath()).toBe('/region');
-    expect(checkedLabels()).toEqual([OUTSIDE_UK]);
+    expect(currentPath()).toBe('/check-answers');
   });
 
   it('still shows the "not eligible" message after a refresh', async () => {

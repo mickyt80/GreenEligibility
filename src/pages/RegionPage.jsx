@@ -32,7 +32,8 @@ export default function RegionPage() {
     }
     // Only kept once "Continue" is pressed, so leaving without continuing saves nothing.
     saveAnswer('region', region);
-    navigate(region === OUTSIDE_UK ? '/result' : '/ownership');
+    // Following route.md: check answers is always shown before the result.
+    navigate(region === OUTSIDE_UK ? '/check-answers' : '/ownership');
   };
 
   return (

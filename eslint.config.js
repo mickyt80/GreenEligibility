@@ -31,6 +31,14 @@ export default defineConfig([
     },
   },
 
+  // End-to-end tests, which run in Node and drive a real browser. Code passed to
+  // page.evaluate() runs inside the browser, so browser globals are allowed too.
+  {
+    files: ['e2e/**/*.js'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+
   // Config files, which run in Node.
   {
     files: ['*.config.js'],

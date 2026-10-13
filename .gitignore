@@ -6,3 +6,5 @@ gitcommand.md
 route.md
 instruction.md
 Questions.md
+test-results/
+playwright-report/

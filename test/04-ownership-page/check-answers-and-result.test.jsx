@@ -29,6 +29,7 @@ import {
   OWN_HOME_REASON,
   getChangeOwnershipLink,
   answerOwnership,
+  answerPropertyQuestions,
   answerBoth,
 } from './helpers';
 
@@ -48,13 +49,15 @@ beforeEach(() => {
 });
 
 describe('check answers', () => {
+  // Changed by spec/05-property-questions: checked with a renter, who has only these two rows.
+  // Owners' further rows are tested in test/05-property-questions/.
   it.each(UK_REGIONS)('shows the region row, then the ownership row, for "%s" (requirement 16)', async (region) => {
     const { user } = renderApp('/region');
-    await answerBoth(user, region, OWN);
+    await answerBoth(user, region, RENTS[0]);
     const rows = getRows();
     expect(rows).toHaveLength(2);
     expect(rowText(rows[0])).toEqual([REGION_LABEL, region]);
-    expect(rowText(rows[1])).toEqual([OWNERSHIP_LABEL, OWN]);
+    expect(rowText(rows[1])).toEqual([OWNERSHIP_LABEL, RENTS[0]]);
   });
 
   it.each(OWNERSHIP_ANSWERS)('shows "%s" in the ownership row (requirement 16)', async (answer) => {
@@ -63,9 +66,10 @@ describe('check answers', () => {
     expect(normalise(getRowValue(getRows()[1]).textContent)).toBe(answer);
   });
 
+  // Changed by spec/05-property-questions: checked with a renter, who has only two rows.
   it('gives each row its own "Change" link, and no others (requirement 16)', async () => {
     const { user } = renderApp('/region');
-    await answerBoth(user, 'Wales', OWN);
+    await answerBoth(user, 'Wales', RENTS[0]);
     const rows = getRows();
     expect(within(rows[0]).getByRole('link')).toBe(getChangeLink());
     expect(within(rows[1]).getByRole('link')).toBe(getChangeOwnershipLink());
@@ -99,6 +103,9 @@ describe('check answers', () => {
     expect(currentPath()).toBe('/ownership');
     expect(checkedLabels()).toEqual([RENTS[0]]);
     await answerOwnership(user, OWN);
+    // Changed by spec/05-property-questions: "Own" now goes on to /main-residence.
+    expect(currentPath()).toBe('/main-residence');
+    await answerPropertyQuestions(user);
     expect(currentPath()).toBe('/check-answers');
     expect(normalise(getRowValue(getRows()[1]).textContent)).toBe(OWN);
   });

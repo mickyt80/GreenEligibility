@@ -90,7 +90,8 @@ describe('the check answers page', () => {
       const { user } = renderApp('/region');
       await reachCheckAnswers(user, region);
       const rows = getRows();
-      expect(rows).toHaveLength(region === OUTSIDE_UK ? 1 : 2);
+      // Since spec/05-property-questions, an owner in the UK has five rows.
+      expect(rows).toHaveLength(region === OUTSIDE_UK ? 1 : 5);
       expect(normalise(getRowKey(rows[0]).textContent)).toBe(REGION_LABEL);
       expect(normalise(getRowValue(rows[0]).textContent)).toBe(region);
       expect(within(rows[0]).getByRole('link')).toBe(getChangeLink());
@@ -182,8 +183,11 @@ describe('changing the region answer', () => {
     await user.click(getChangeLink());
     await answerRegion(user, 'Scotland');
     expect(currentPath()).toBe('/ownership');
-    await user.click(getRadio('Own (with or without mortgage)'));
-    await user.click(getOwnershipContinue());
+    // Since spec/05-property-questions, "Own" also answers the property questions on the way.
+    for (const answer of ['Own (with or without mortgage)', 'First home', 'Yes', 'D']) {
+      await user.click(getRadio(answer));
+      await user.click(getOwnershipContinue());
+    }
     expect(currentPath()).toBe('/check-answers');
     expect(normalise(getRowValue(getRows()[0]).textContent)).toBe('Scotland');
   });

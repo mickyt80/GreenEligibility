@@ -99,7 +99,8 @@ describe('no answer chosen', () => {
     await reachOwnership(user);
     await user.click(getContinueButton());
     await answerOwnership(user, OWN);
-    expect(currentPath()).toBe('/check-answers');
+    // Changed by spec/05-property-questions: "Own" now goes on to /main-residence.
+    expect(currentPath()).toBe('/main-residence');
   });
 });
 
@@ -163,12 +164,12 @@ describe('keeping the answer', () => {
   });
 
   it('undoes an earlier "Accept and continue" when an ownership answer is saved (requirement 15)', async () => {
-    const { user, goBack } = renderApp('/region');
+    const { user } = renderApp('/region');
     await answerBoth(user, 'England', OWN);
     await user.click(getAccept());
-    act(() => goBack());
-    act(() => goBack());
-    await answerOwnership(user, OWN);
+    // Since spec/05-property-questions the ownership page is further back, so open it directly.
+    const fresh = refresh('/ownership');
+    await answerOwnership(fresh.user, OWN);
     const { currentPath } = refresh('/result');
     await waitFor(() => expect(currentPath()).toBe('/'));
   });
@@ -188,6 +189,7 @@ describe('using a keyboard (requirement 29)', () => {
     }
     expect(getContinueButton()).toHaveFocus();
     await user.keyboard('{Enter}');
-    expect(currentPath()).toBe('/check-answers');
+    // Changed by spec/05-property-questions: "Own" now goes on to /main-residence.
+    expect(currentPath()).toBe('/main-residence');
   });
 });

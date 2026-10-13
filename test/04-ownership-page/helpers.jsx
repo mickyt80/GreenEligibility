@@ -26,8 +26,22 @@ export async function reachOwnership(user, region = 'England') {
   await answerRegion(user, region);
 }
 
-// From /region, answers both questions and ends on the check answers page.
+// Answers the property questions with eligible answers ("First home", "Yes", "D"),
+// starting on /main-residence and ending on check answers. (Added for spec/05-property-questions.)
+export async function answerPropertyQuestions(user) {
+  for (const answer of ['First home', 'Yes', 'D']) {
+    await user.click(getRadio(answer));
+    await user.click(getContinueButton());
+  }
+}
+
+// From /region, answers both questions and ends on the check answers page. Since
+// spec/05-property-questions, "Own (with or without mortgage)" also answers the property
+// questions with eligible answers on the way.
 export async function answerBoth(user, region, ownership) {
   await reachOwnership(user, region);
   await answerOwnership(user, ownership);
+  if (ownership === 'Own (with or without mortgage)') {
+    await answerPropertyQuestions(user);
+  }
 }

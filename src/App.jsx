@@ -9,6 +9,9 @@ import RegionPage from './pages/RegionPage';
 import CookiesPage from './pages/CookiesPage';
 import PropertyTypePage from './pages/PropertyTypePage';
 import OwnershipPage from './pages/OwnershipPage';
+import MainResidencePage from './pages/MainResidencePage';
+import BuiltBefore2000Page from './pages/BuiltBefore2000Page';
+import EpcRatingPage from './pages/EpcRatingPage';
 import IncomePage from './pages/IncomePage';
 import InsulationPage from './pages/InsulationPage';
 import HeatingPage from './pages/HeatingPage';
@@ -34,6 +37,9 @@ function App() {
             <Route path="/cookies" element={<CookiesPage />} />
             <Route path="/property-type" element={<PropertyTypePage />} />
             <Route path="/ownership" element={<OwnershipPage />} />
+            <Route path="/main-residence" element={<MainResidencePage />} />
+            <Route path="/built-before-2000" element={<BuiltBefore2000Page />} />
+            <Route path="/epc-rating" element={<EpcRatingPage />} />
             <Route path="/income" element={<IncomePage />} />
             <Route path="/insulation" element={<InsulationPage />} />
             <Route path="/heating" element={<HeatingPage />} />

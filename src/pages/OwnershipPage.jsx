@@ -18,7 +18,8 @@ const ANSWERS = [
 const ERROR_MESSAGE = 'Select if you own or rent your property';
 
 // The question after the region page, following the design system's question page pattern.
-// Every answer goes on to check answers, as set out in route.md.
+// "Own (with or without mortgage)" goes on to the main residence question; any "Rent"
+// answer goes straight to check answers, as set out in route.md.
 export default function OwnershipPage() {
   const navigate = useNavigate();
   // Starts with the answer last continued with, if there is one.
@@ -37,7 +38,8 @@ export default function OwnershipPage() {
     }
     // Only kept once "Continue" is pressed. Saving also undoes an earlier "Accept and continue".
     saveAnswer('ownership', ownership);
-    navigate('/check-answers');
+    // Only owners go on to the questions about their home. Renters are already not eligible.
+    navigate(ownership === OWN ? '/main-residence' : '/check-answers');
   };
 
   return (

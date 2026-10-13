@@ -1,9 +1,13 @@
+import { Fragment } from 'react';
+
 // GOV.UK radios, following GOV.UK Frontend's radios markup for a page that asks
 // one question: the question is the fieldset's legend and the page's heading.
 // The first radio's id is `name`, so an error summary can link to it.
 // Pass `value` and `onChange` to control which answer is selected; leave them out
 // and the browser alone keeps track of it.
-export default function GovukRadios({ name, question, options, value, onChange, error }) {
+// `inline` puts the answers side by side, as the design system does for two short answers.
+// `dividerBefore` names an answer to put an "or" divider before, such as "Not known".
+export default function GovukRadios({ name, question, options, value, onChange, error, inline, dividerBefore }) {
   const errorId = `${name}-error`;
   const radioId = (index) => (index === 0 ? name : `${name}-${index + 1}`);
   const controlled = onChange !== undefined;
@@ -19,24 +23,27 @@ export default function GovukRadios({ name, question, options, value, onChange, 
             <span className="govuk-visually-hidden">Error:</span> {error}
           </p>
         )}
-        <div className="govuk-radios" data-module="govuk-radios">
+        <div className={`govuk-radios${inline ? ' govuk-radios--inline' : ''}`} data-module="govuk-radios">
           {options.map((option, index) => (
-            <div className="govuk-radios__item" key={option}>
-              <input
-                className="govuk-radios__input"
-                id={radioId(index)}
-                name={name}
-                type="radio"
-                value={option}
-                {...(controlled && {
-                  checked: value === option,
-                  onChange: () => onChange(option),
-                })}
-              />
-              <label className="govuk-label govuk-radios__label" htmlFor={radioId(index)}>
-                {option}
-              </label>
-            </div>
+            <Fragment key={option}>
+              {option === dividerBefore && <div className="govuk-radios__divider">or</div>}
+              <div className="govuk-radios__item">
+                <input
+                  className="govuk-radios__input"
+                  id={radioId(index)}
+                  name={name}
+                  type="radio"
+                  value={option}
+                  {...(controlled && {
+                    checked: value === option,
+                    onChange: () => onChange(option),
+                  })}
+                />
+                <label className="govuk-label govuk-radios__label" htmlFor={radioId(index)}>
+                  {option}
+                </label>
+              </div>
+            </Fragment>
           ))}
         </div>
       </fieldset>

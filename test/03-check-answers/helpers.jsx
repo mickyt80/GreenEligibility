@@ -21,11 +21,14 @@ export const getOwnershipContinue = () => within(getMain()).getByRole('button', 
 
 // Answers the region question from /region and, for a UK region, answers "Own (with or
 // without mortgage)" on the ownership page too, so the user ends on the check answers page.
-// (The ownership page needs an answer since spec/04-ownership-page.)
+// (The ownership page needs an answer since spec/04-ownership-page. Since
+// spec/05-property-questions, owners also answer "First home", "Yes" and "D" on the way.)
 export async function reachCheckAnswers(user, region) {
   await answerRegion(user, region);
   if (region !== 'Outside of the UK') {
-    await user.click(screen.getByRole('radio', { name: 'Own (with or without mortgage)' }));
-    await user.click(getOwnershipContinue());
+    for (const answer of ['Own (with or without mortgage)', 'First home', 'Yes', 'D']) {
+      await user.click(screen.getByRole('radio', { name: answer }));
+      await user.click(getOwnershipContinue());
+    }
   }
 }

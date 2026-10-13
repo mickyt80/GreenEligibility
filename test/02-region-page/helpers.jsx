@@ -34,7 +34,9 @@ export const getMain = () => screen.getByRole('main');
 export const getRadio = (label) => screen.getByRole('radio', { name: label });
 export const getRadios = () => within(getMain()).queryAllByRole('radio');
 export const getContinue = () => screen.getByRole('button', { name: 'Continue' });
-export const queryBackLink = () => within(getMain()).queryByRole('link', { name: 'Back' });
+// The "Back" link sits at the top of the page, before the main content, on the same row as
+// the language navigation.
+export const queryBackLink = () => screen.queryByRole('link', { name: 'Back' });
 export const checkedLabels = () =>
   getRadios()
     .filter((radio) => radio.checked)

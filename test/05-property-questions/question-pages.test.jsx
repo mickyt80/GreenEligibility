@@ -191,7 +191,9 @@ describe.each(NEW_PAGES)('on $path', (page) => {
     expect(main.querySelectorAll('input')).toHaveLength(page.answers.length);
     expect(main.querySelectorAll('select, textarea')).toHaveLength(0);
     expect(main.querySelectorAll('fieldset')).toHaveLength(1);
-    expect(within(main).getAllByRole('link')).toEqual([queryBackLink()]);
+    // The "Back" link sits before the main content, so the main content has no links.
+    expect(within(main).queryAllByRole('link')).toEqual([]);
+    expect(queryBackLink()).not.toBeNull();
     expect(within(main).getAllByRole('button')).toEqual([getContinueOnPage()]);
   });
 

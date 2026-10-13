@@ -1,3 +1,22 @@
 /* Site-specific styles only.
    All GOV.UK Design System styles come from the official govuk-frontend package,
    loaded in main.jsx. */
+
+/* The row above the main content: the page's "Back" link on the left and the language
+   navigation on the right. The language navigation comes first in the page (for the order
+   that Tab moves through), so the row is drawn in reverse. Both get the back link's
+   standard 15px spacing above and below, so the row is the same height with or without a
+   "Back" link. */
+.app-top-row {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* The language navigation, which is the row's <nav>. */
+.app-top-row > nav {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

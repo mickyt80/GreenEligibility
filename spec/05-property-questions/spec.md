@@ -1,6 +1,6 @@
 # Spec: Green Home Grant – property questions (main residence, year built, EPC rating)
 
-*Based on `intent/05-property-questions/intent.md` and `route.md`, plus the site owner's answers to three follow-up questions on 2026-10-13. It builds on the specs in `spec/01-start-page/` to `spec/04-ownership-page/`. Everything there still applies, except where this spec says otherwise.*
+*Based on `intent/05-property-questions/intent.md` and `route.md`, plus the site owner's answers to three follow-up questions on 2026-10-13. It builds on the specs in `spec/01-start-page/` to `spec/04-ownership-page/`. Everything there still applies, except where this spec says otherwise. Requirements marked *Changed* or added after requirement 36 were updated on 2026-10-13 for the "Not known" result.*
 
 ## Requirements
 
@@ -89,7 +89,7 @@
     | No (built in 2000 or later) | "The Green Home Grant is only available for properties built before the year 2000." |
     | A, B or C | "The Green Home Grant is only available for properties with an EPC rating of D or below." |
 
-32. With "Own (with or without mortgage)", "First home", "Yes", and D, E, F, G or "Not known", "Accept and continue" shows the green panel "You are eligible for a Green Home Grant".
+32. With "Own (with or without mortgage)", "First home", "Yes", and D, E, F or G, "Accept and continue" shows the green panel "You are eligible for a Green Home Grant". *Changed: "Not known" now gives the result in requirements 37–41.*
 33. Typing `/result` before "Accept and continue", or with a question on the path unanswered, opens the first page.
 
 ### Using a keyboard
@@ -115,6 +115,14 @@
     10. Narrow the window to about 320 pixels. Check there is no sideways scrolling on the three new pages or on check answers.
     11. Close the tab, open the service in a new tab, and go to `/epc-rating`. Check no answer is selected.
 
+### The "Not known" result
+
+37. With "Own (with or without mortgage)", "First home", "Yes" and "Not known", "Accept and continue" shows the heading "You may be eligible", not in the green panel. The tab reads "You may be eligible – GOV.UK".
+38. Under the heading is one paragraph, and nothing else: "We cannot assess your eligibility without an EPC rating. For more information on your property's EPC rating, see Find an energy certificate."
+39. "Find an energy certificate" is a link to https://www.gov.uk/find-energy-certificate, opening in the same tab.
+40. An earlier "not eligible" answer still gives its own reason instead. For example, "No" for the year built with an earlier "Not known" EPC answer gives the year built reason.
+41. In Welsh, the heading is "Efallai eich bod yn gymwys" and the link reads "Dod o hyd i dystysgrif ynni" (draft Welsh, to be checked). The link goes to the same GOV.UK page.
+
 ## Decisions
 
 | Decision | Reason |
@@ -132,7 +140,8 @@
 | Work out the user's path in one place: region → ownership (UK only) → main residence (Own only) → year built (First home only) → EPC rating (Yes only). Check answers and the results page both use it. | Both pages then agree on which questions count. |
 | Check answers decides what to show in this order: no region → the first page; a question on the path unanswered → the first page; otherwise show one row per question on the path. | Required (follow-up answer, 2026-10-13). It extends how a missing ownership answer is handled. |
 | Answers to questions no longer on the path are kept, but not shown or used. | Required. The intent treats them like the ownership answer after "Outside of the UK". |
-| The results page decides in this order: not accepted → the first page; then each question on the path in order, where an unanswered question → the first page, and a "not eligible" answer → its reason; if every answer passes → eligible. | This gives the first "not eligible" answer's reason, one at a time, as the intent asks. |
+| The results page decides in this order: not accepted → the first page; then each question on the path in order, where an unanswered question → the first page, and a "not eligible" answer → its reason; if every answer passes but the EPC rating is "Not known" → "You may be eligible"; otherwise → eligible. | This gives the first "not eligible" answer's reason, one at a time, as the intent asks. *Changed 2026-10-13 for the "Not known" result.* |
+| The "Not known" result uses a plain heading and one paragraph, with "Find an energy certificate" as the link text. | Required (site owner's choices, 2026-10-13). It isn't a confirmed result, and GOV.UK style avoids "here" as link text. |
 | The "Change" links' hidden screen reader text is "whether this is your main residence or a secondary home", "whether your property was built before the year 2000" and "your home's EPC rating". | Design system guidance. It matches the wording style chosen for the ownership row. |
 | Tests that expect "Own (with or without mortgage)" to go to check answers, or to be eligible on its own, are updated to go through the new pages. | These requirements have changed: ownership spec requirements 9 and 22, and the check answers tests that reach the "eligible" result. |
 | Add the new pages to `route.md`. | It records the journey the site owner shared. |

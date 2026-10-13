@@ -13,4 +13,4 @@ start ->
 						/result (not eligible)
 					/epc-rating (when "Yes") ->
 						/check-answers ->
-							/result (eligible for D, E, F, G or Not known; not eligible for A, B or C)
+							/result (eligible for D, E, F, G; may be eligible for Not known; not eligible for A, B or C)

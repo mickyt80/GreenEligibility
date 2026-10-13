@@ -84,6 +84,11 @@ const en = {
   reasonMainResidence: 'The Green Home Grant is only available for your main residence.',
   reasonBuilt: 'The Green Home Grant is only available for properties built before the year 2000.',
   reasonEpc: 'The Green Home Grant is only available for properties with an EPC rating of D or below.',
+  mayBeEligibleHeading: 'You may be eligible',
+  mayBeEligibleReason: 'We cannot assess your eligibility without an EPC rating.',
+  mayBeEligibleMoreBefore: "For more information on your property's EPC rating, see ",
+  findEnergyCertificate: 'Find an energy certificate',
+  mayBeEligibleMoreAfter: '.',
 
   // Accessibility statement
   accessibilityHeading: 'Accessibility statement',
@@ -165,6 +170,11 @@ const cy = {
   reasonMainResidence: 'Dim ond ar gyfer eich prif breswylfa y mae’r Grant Cartrefi Gwyrdd ar gael.',
   reasonBuilt: 'Dim ond ar gyfer eiddo a adeiladwyd cyn y flwyddyn 2000 y mae’r Grant Cartrefi Gwyrdd ar gael.',
   reasonEpc: 'Dim ond ar gyfer eiddo sydd â sgôr EPC o D neu is y mae’r Grant Cartrefi Gwyrdd ar gael.',
+  mayBeEligibleHeading: 'Efallai eich bod yn gymwys',
+  mayBeEligibleReason: 'Ni allwn asesu eich cymhwysedd heb sgôr EPC.',
+  mayBeEligibleMoreBefore: 'I gael rhagor o wybodaeth am sgôr EPC eich eiddo, gweler ',
+  findEnergyCertificate: 'Dod o hyd i dystysgrif ynni',
+  mayBeEligibleMoreAfter: '.',
 
   accessibilityHeading: 'Datganiad hygyrchedd',
   accessibilityHowAccessible: 'Pa mor hygyrch yw’r gwasanaeth hwn',

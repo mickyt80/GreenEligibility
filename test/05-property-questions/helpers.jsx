@@ -7,7 +7,8 @@ export const FIRST_HOME = 'First home';
 export const SECONDARY_HOME = 'Secondary home';
 export const EPC_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 export const NOT_KNOWN = 'Not known';
-export const ELIGIBLE_EPC = ['D', 'E', 'F', 'G', NOT_KNOWN];
+// "Not known" gives "You may be eligible" instead; see test/07-epc-not-known/.
+export const ELIGIBLE_EPC = ['D', 'E', 'F', 'G'];
 export const NOT_ELIGIBLE_EPC = ['A', 'B', 'C'];
 
 export const MAIN_RESIDENCE = {

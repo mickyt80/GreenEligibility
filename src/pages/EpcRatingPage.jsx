@@ -1,9 +1,10 @@
 import QuestionPage from '../components/QuestionPage';
 
-const NOT_KNOWN = 'Not known';
+export const NOT_KNOWN = 'Not known';
 
 // The last question, asked only of people whose home was built before 2000.
-// Every answer goes to check answers.
+// Every answer goes to check answers. "Not known" can't be assessed, so the result says the
+// user may be eligible and points them to where they can find their rating.
 export default function EpcRatingPage() {
   return (
     <QuestionPage

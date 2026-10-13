@@ -1,6 +1,6 @@
 # Intent: Green Home Grant – property questions (main residence, year built, EPC rating)
 
-*Based on `instruction.md`, `Questions.md` (questions 3 to 5), `route.md`, and an interview with the site owner, 2026-10-13. It follows on from `intent/04-ownership-page/intent.md`.*
+*Based on `instruction.md`, `Questions.md` (questions 3 to 5), `route.md`, and an interview with the site owner, 2026-10-13. It follows on from `intent/04-ownership-page/intent.md`. Updated on 2026-10-13: an EPC rating of "Not known" now gives "You may be eligible" instead of the eligible result.*
 
 ## Problem
 
@@ -48,7 +48,8 @@ As soon as an answer means not eligible, the remaining questions are skipped and
 | Main residence | Secondary home | Not eligible | Check answers |
 | Year built | Yes | Can be eligible | EPC rating |
 | Year built | No | Not eligible | Check answers |
-| EPC rating | D, E, F, G or Not known | Can be eligible | Check answers |
+| EPC rating | D, E, F, G | Can be eligible | Check answers |
+| EPC rating | Not known | May be eligible | Check answers |
 | EPC rating | A, B or C | Not eligible | Check answers |
 
 The journey, extending `route.md`:
@@ -62,7 +63,7 @@ The journey, extending `route.md`:
 			/check-answers (when "No") -> /result (not eligible)
 			EPC rating (when "Yes") ->
 				/check-answers ->
-					/result (eligible for D, E, F, G or Not known; not eligible for A, B or C)
+					/result (eligible for D, E, F, G; may be eligible for Not known; not eligible for A, B or C)
 ```
 
 Check answers is still always shown before the result.
@@ -109,11 +110,21 @@ After "Accept and continue", only one reason is shown: the reason for the first 
 
 The heading is still "You are not eligible for a Green Home Grant".
 
-Someone in the UK who owns their home, with "First home", "Yes", and an EPC rating of D, E, F, G or "Not known", sees the green panel "You are eligible for a Green Home Grant".
+Someone in the UK who owns their home, with "First home", "Yes", and an EPC rating of D, E, F or G, sees the green panel "You are eligible for a Green Home Grant".
+
+### When the EPC rating is "Not known"
+
+"If on the EPC-rating page the selection is 'Not known', the text on the results page should be different." It should state "You may be eligible. We cannot assess your eligibility without an EPC rating. For more information on your properties EPC rating see here", "then add a link to the Find an energy certificate GOV.UK website".
+
+Following the site owner's choices on 2026-10-13:
+- "You may be eligible" is the page heading. It isn't in the green panel, because it isn't a confirmed result.
+- The rest is one paragraph under it: "We cannot assess your eligibility without an EPC rating. For more information on your property's EPC rating, see Find an energy certificate."
+- "Find an energy certificate" is the link, to https://www.gov.uk/find-energy-certificate. It replaces "see here", because GOV.UK style avoids "here" as link text. "properties" is corrected to "property's".
+- It is shown only when every other answer passes. An earlier "not eligible" answer still gives its own reason.
 
 ### Main measure of success
 
-Someone who owns their main residence, built before 2000, with an EPC rating of D or below or not known, is told they are eligible. Anyone else is told clearly, with one reason, why they aren't.
+Someone who owns their main residence, built before 2000, with an EPC rating of D or below, is told they are eligible. If they don't know the rating, they are told they may be eligible and where to find it. Anyone else is told clearly, with one reason, why they aren't.
 
 ## Out of scope
 

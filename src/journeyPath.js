@@ -2,6 +2,7 @@
 // Check answers and the results page both use this, so they always agree on which
 // questions count.
 import { getAnswer } from './journeyAnswers';
+import { NOT_KNOWN } from './pages/EpcRatingPage';
 import { FIRST_HOME } from './pages/MainResidencePage';
 import { OWN } from './pages/OwnershipPage';
 import { OUTSIDE_UK } from './pages/RegionPage';
@@ -61,14 +62,18 @@ const QUESTIONS = [
 // - `steps`: each question on the path with its answer, in order
 // - `complete`: false if a question on the path is unanswered
 // - `reasonKey`: the reason for the first "not eligible" answer, or null if every answer passes
+// - `mayBeEligible`: true when every answer passes but the EPC rating is "Not known", so
+//   eligibility can't be assessed
 // Answers to questions no longer on the path are kept, but left out here.
 export function getPath() {
   const steps = [];
   for (const question of QUESTIONS) {
     const answer = getAnswer(question.key);
-    if (!answer) return { steps, complete: false, reasonKey: null };
+    if (!answer) return { steps, complete: false, reasonKey: null, mayBeEligible: false };
     steps.push({ ...question, answer });
-    if (!question.isEligible(answer)) return { steps, complete: true, reasonKey: question.reasonKey };
+    if (!question.isEligible(answer)) {
+      return { steps, complete: true, reasonKey: question.reasonKey, mayBeEligible: false };
+    }
   }
-  return { steps, complete: true, reasonKey: null };
+  return { steps, complete: true, reasonKey: null, mayBeEligible: getAnswer('epcRating') === NOT_KNOWN };
 }
